@@ -9,6 +9,8 @@ import { DeleteUserUseCase } from 'src/application/use-cases/delete-user.use-cas
 import { DatabaseModule } from 'src/infrastructure/database/database.module';
 import { ServiceModule } from 'src/infrastructure/services/service.module';
 import { GetUserUseCase } from 'src/application/use-cases/get-user.use-case';
+import { AuthenticateController } from './controllers/authenticate.controller';
+import { AuthenticateUserUseCase } from 'src/application/use-cases/authenticate-user.use-case';
 
 @Module({
   imports: [DatabaseModule, ServiceModule],
@@ -17,12 +19,14 @@ import { GetUserUseCase } from 'src/application/use-cases/get-user.use-case';
     CreateUserController,
     EditUserController,
     DeleteUserController,
+    AuthenticateController,
   ],
   providers: [
     GetUserUseCase,
     CreateUserUseCase,
     EditUserUseCase,
     DeleteUserUseCase,
+    AuthenticateUserUseCase,
   ],
 })
 export class HttpModule {}

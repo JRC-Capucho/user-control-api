@@ -22,4 +22,8 @@ export class Environment {
   @Transform(({ value }) => value ?? 3333)
   @IsNumber()
   PORT: number;
+  @IsString()
+  JWT_SECRET: string;
+  @IsString()
+  JWT_EXPIRES_IN: string;
 }
