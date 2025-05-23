@@ -1,50 +1,51 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { User } from "src/domain/entities/user.entity";
-import type { Role } from "src/domain/enum/roles.enum";
-import type { HashService } from "src/domain/interfaces/hash.service.interface";
-import type { UserRepository } from "src/domain/interfaces/user.repository.interface";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Either, left, right } from 'src/core/either';
+import { User } from 'src/domain/entities/user.entity';
+import { Role } from 'src/domain/enum/roles.enum';
+import { HashService } from 'src/domain/interfaces/hash.service.interface';
+import { UserRepository } from 'src/domain/interfaces/user.repository.interface';
+import { EmailAlreadyInUseError } from './errors/email-already-in-use-error';
 
 interface CreateUserUseCaseRequest {
-	name: string;
-	email: string;
-	password: string;
-	role: Role;
+  name: string;
+  email: string;
+  password: string;
+  role: Role;
 }
 
-interface CreateUserUseCaseResponse {
-	user: User;
-}
+type CreateUserUseCaseResponse = Either<EmailAlreadyInUseError, { user: User }>;
 
 @Injectable()
 export class CreateUserUseCase {
-	constructor(
-		private readonly userRepository: UserRepository,
-		private readonly hashService: HashService,
-	) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly hashService: HashService,
+  ) {}
 
-	async execute({
-		email,
-		name,
-		password,
-		role,
-	}: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-		const emailAlreadyInUse = await this.userRepository.findByEmail(email);
+  async execute({
+    email,
+    name,
+    password,
+    role,
+  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
+    const emailAlreadyInUse = await this.userRepository.findByEmail(email);
 
-		if (emailAlreadyInUse) {
-			throw new BadRequestException("Email already in use");
-		}
+    if (emailAlreadyInUse) {
+      return left(new EmailAlreadyInUseError(email));
+    }
 
-		const passwordHashed = await this.hashService.hash(password);
+    const passwordHashed = await this.hashService.hash(password);
 
-		const user = User.create({
-			email,
-			name,
-			password: passwordHashed,
-			role,
-		});
+    const user = User.create({
+      email,
+      name,
+      password: passwordHashed,
+      role,
+      createdAt: new Date(),
+    });
 
-		await this.userRepository.create(user);
+    await this.userRepository.create(user);
 
-		return { user };
-	}
+    return right({ user });
+  }
 }

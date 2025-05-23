@@ -1,4 +1,4 @@
-export interface HashService {
-	hash(plainText: string): Promise<string>;
-	compare(plainText: string, hashedText: string): Promise<boolean>;
+export abstract class HashService {
+  abstract hash(plainText: string): Promise<string>;
+  abstract compare(plainText: string, hashedText: string): Promise<boolean>;
 }
