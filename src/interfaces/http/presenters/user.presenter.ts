@@ -1,4 +1,4 @@
-import { User } from 'src/domain/entities/user.entity';
+import { User } from 'src/domain/entities/user.entity'
 
 export class UserPresenter {
   static toHTTP(user: User) {
@@ -8,6 +8,6 @@ export class UserPresenter {
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,
-    };
+    }
   }
 }

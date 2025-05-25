@@ -1,14 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Either, left, right } from 'src/core/either';
-import { User } from 'src/domain/entities/user.entity';
-import { UserRepository } from 'src/domain/interfaces/user.repository.interface';
-import { UserNotFoundError } from './errors/user-not-found-error';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { Either, left, right } from 'src/core/either'
+import { User } from 'src/domain/entities/user.entity'
+import { UserRepository } from 'src/domain/interfaces/user.repository.interface'
+import { UserNotFoundError } from './errors/user-not-found-error'
 
 interface DeleteUserUseCaseRequest {
-  id: string;
+  id: string
 }
 
-type DeleteUserUseCaseResponse = Either<UserNotFoundError, null>;
+type DeleteUserUseCaseResponse = Either<UserNotFoundError, null>
 
 @Injectable()
 export class DeleteUserUseCase {
@@ -17,14 +17,14 @@ export class DeleteUserUseCase {
   async execute({
     id,
   }: DeleteUserUseCaseRequest): Promise<DeleteUserUseCaseResponse> {
-    const user = await this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id)
 
     if (!user) {
-      return left(new UserNotFoundError());
+      return left(new UserNotFoundError())
     }
 
-    await this.userRepository.delete(user);
+    await this.userRepository.delete(user)
 
-    return right(null);
+    return right(null)
   }
 }

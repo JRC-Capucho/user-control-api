@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { UserRepositoryImpl } from './repositories/user.repository.impl';
-import { UserRepository } from 'src/domain/interfaces/user.repository.interface';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserOrmEntity } from './entities/user.orm-entity';
-import { EnvironmentModule } from '../config/environment.module';
-import { EnvironmentService } from '../config/environment.service';
+import { Module } from '@nestjs/common'
+import { UserRepositoryImpl } from './repositories/user.repository.impl'
+import { UserRepository } from 'src/domain/interfaces/user.repository.interface'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { UserOrmEntity } from './entities/user.orm-entity'
+import { EnvironmentModule } from '../config/environment.module'
+import { EnvironmentService } from '../config/environment.service'
 
 @Module({
   imports: [

@@ -1,19 +1,16 @@
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 import { CreateUserUseCase } from 'src/application/use-cases/create-user.use-case'
 import { CreateUserDto } from '../dtos/create-user.dto'
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 import { EmailAlreadyInUseError } from 'src/application/use-cases/errors/email-already-in-use-error'
 import { UserPresenter } from '../presenters/user.presenter'
-import { ApiBearerAuth } from '@nestjs/swagger'
-import { Action } from 'src/domain/enum/actions.enum'
-import { Permissions } from '../decorators/permissions.decorator'
+import { Public } from 'src/infrastructure/auth/public'
 
-@ApiBearerAuth()
-@Controller('users')
-export class CreateUserController {
-  constructor(private readonly createUserUseCase: CreateUserUseCase) {}
+@Public()
+@Controller('register')
+export class RegisterUserController {
+  constructor(private createUserUseCase: CreateUserUseCase) {}
 
   @Post()
-  @Permissions(Action.CREATE, 'user')
   async handle(@Body() body: CreateUserDto) {
     const { email, name, password, role } = body
 

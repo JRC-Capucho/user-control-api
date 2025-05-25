@@ -1,5 +1,5 @@
-import { User } from 'src/domain/entities/user.entity';
-import { UserOrmEntity } from '../entities/user.orm-entity';
+import { User } from 'src/domain/entities/user.entity'
+import { UserOrmEntity } from '../entities/user.orm-entity'
 
 export class UserOrmMapper {
   static toDomain(raw: UserOrmEntity): User {
@@ -13,7 +13,7 @@ export class UserOrmMapper {
         updatedAt: raw.updatedAt,
       },
       raw.id,
-    );
+    )
   }
 
   static toOrm(user: User): UserOrmEntity {
@@ -25,6 +25,6 @@ export class UserOrmMapper {
       password: user.password,
       role: user.role,
       updatedAt: user.updatedAt,
-    };
+    }
   }
 }

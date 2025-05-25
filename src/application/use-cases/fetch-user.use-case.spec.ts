@@ -1,16 +1,16 @@
 import { InMemoryUserRepository } from 'test/repositories/in-memory-user.repository'
 import { makeUser } from 'test/factories/make-user'
-import { EditUserUseCase } from './edit-user.use-case'
+import { FetchUserUseCase } from './fetch-user.use-case'
+import { r } from '@faker-js/faker/dist/airline-BUL6NtOJ'
 
 let inMemoryUserRepository: InMemoryUserRepository
 
-let sut: EditUserUseCase
+let sut: FetchUserUseCase
 
-describe('edit user use case', () => {
+describe('get user use case', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
-
-    sut = new EditUserUseCase(inMemoryUserRepository)
+    sut = new FetchUserUseCase(inMemoryUserRepository)
   })
 
   it('Should be able to create user ', async () => {
@@ -18,15 +18,8 @@ describe('edit user use case', () => {
 
     await inMemoryUserRepository.create(user)
 
-    const newUser = makeUser()
+    const result = await sut.execute({ page: 1, currentId: user.id })
 
-    await sut.execute({
-      email: newUser.email,
-      id: user.id,
-      name: newUser.name,
-      role: newUser.role,
-    })
-
-    expect(inMemoryUserRepository.items[0].name).toEqual(newUser.name)
+    expect(result.isRight()).toBe(true)
   })
 })
