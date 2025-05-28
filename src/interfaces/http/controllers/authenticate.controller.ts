@@ -19,7 +19,6 @@ export class AuthenticateController {
   @Post()
   async handle(@Body() body: AuthenticateDto) {
     const { email, password } = body
-    Logger.debug('JACKPOT')
 
     const result = await this.authenticateUseCase.execute({ email, password })
 
