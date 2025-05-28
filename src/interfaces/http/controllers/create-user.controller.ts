@@ -1,19 +1,29 @@
 import { CreateUserUseCase } from 'src/application/use-cases/create-user.use-case'
 import { CreateUserDto } from '../dtos/create-user.dto'
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import { EmailAlreadyInUseError } from 'src/application/use-cases/errors/email-already-in-use-error'
 import { UserPresenter } from '../presenters/user.presenter'
-import { ApiBearerAuth } from '@nestjs/swagger'
-import { Action } from 'src/domain/enum/actions.enum'
-import { Permissions } from '../decorators/permissions.decorator'
+import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger'
+import { User } from 'src/domain/entities/user.entity'
+import { PoliciesGuard } from '../decorators/casl/guard/policies.guard'
+import { CheckPolicies } from '../decorators/casl/guard/check-policies'
+import { Action, AppAbility } from '../decorators/casl/casl-ability.factory'
 
+@UseGuards(PoliciesGuard)
 @ApiBearerAuth()
 @Controller('users')
 export class CreateUserController {
   constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.CREATE, User))
+  @ApiCreatedResponse({ type: User })
   @Post()
-  @Permissions(Action.CREATE, 'user')
   async handle(@Body() body: CreateUserDto) {
     const { email, name, password, role } = body
 

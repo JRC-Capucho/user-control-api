@@ -7,6 +7,7 @@ import { validate } from './infrastructure/config/environment.validation'
 import { EnvironmentService } from './infrastructure/config/environment.service'
 import { EnvironmentModule } from './infrastructure/config/environment.module'
 import { AuthModule } from './infrastructure/auth/auth.module'
+import { CaslModule } from './interfaces/http/decorators/casl/casl.module'
 
 @Module({
   imports: [

@@ -1,33 +1,32 @@
 import {
   BadRequestException,
   Controller,
-  Delete,
-  HttpCode,
-  HttpStatus,
+  Get,
   NotFoundException,
-  Param,
   UseGuards,
 } from '@nestjs/common'
-import { ApiBearerAuth, ApiNoContentResponse } from '@nestjs/swagger'
-import { DeleteUserUseCase } from 'src/application/use-cases/delete-user.use-case'
 import { UserNotFoundError } from 'src/application/use-cases/errors/user-not-found-error'
+import { GetUserUseCase } from 'src/application/use-cases/get-user.use-case'
+import { UserPresenter } from '../presenters/user.presenter'
+import { CurrentUser } from 'src/infrastructure/auth/current-user.decorator'
+import { IJwtPayload } from 'src/infrastructure/auth/jwt.strategy'
 import { PoliciesGuard } from '../decorators/casl/guard/policies.guard'
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger'
+import { User } from 'src/domain/entities/user.entity'
 import { CheckPolicies } from '../decorators/casl/guard/check-policies'
 import { Action, AppAbility } from '../decorators/casl/casl-ability.factory'
-import { User } from 'src/domain/entities/user.entity'
 
-@UseGuards(PoliciesGuard)
 @ApiBearerAuth()
+@UseGuards(PoliciesGuard)
 @Controller('users')
-export class DeleteUserController {
-  constructor(private readonly deleteUserUseCase: DeleteUserUseCase) {}
+export class GetCurrentUserController {
+  constructor(private readonly getUserUseCase: GetUserUseCase) {}
 
   @CheckPolicies((ability: AppAbility) => ability.can(Action.DELETE, User))
-  @ApiNoContentResponse()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
-  async handle(@Param('id') id: string) {
-    const result = await this.deleteUserUseCase.execute({ id })
+  @ApiOkResponse({ type: User })
+  @Get('/me')
+  async handle(@CurrentUser() { sub }: IJwtPayload) {
+    const result = await this.getUserUseCase.execute({ id: sub })
 
     if (result.isLeft()) {
       const error = result.value
@@ -39,5 +38,7 @@ export class DeleteUserController {
           throw new BadRequestException(error.message)
       }
     }
+
+    return { user: UserPresenter.toHTTP(result.value.user) }
   }
 }

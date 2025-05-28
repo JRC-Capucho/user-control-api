@@ -4,12 +4,15 @@ import { CreateUserDto } from '../dtos/create-user.dto'
 import { EmailAlreadyInUseError } from 'src/application/use-cases/errors/email-already-in-use-error'
 import { UserPresenter } from '../presenters/user.presenter'
 import { Public } from 'src/infrastructure/auth/public'
+import { ApiCreatedResponse } from '@nestjs/swagger'
+import { User } from 'src/domain/entities/user.entity'
 
 @Public()
 @Controller('register')
 export class RegisterUserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
 
+  @ApiCreatedResponse({ type: User })
   @Post()
   async handle(@Body() body: CreateUserDto) {
     const { email, name, password, role } = body
