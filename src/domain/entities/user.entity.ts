@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
-import type { Role } from '../enum/roles.enum'
+import { Role } from '../enum/roles.enum'
+import { ApiProperty } from '@nestjs/swagger'
 
 export interface IUserProps {
   name: string
@@ -24,10 +25,12 @@ export class User {
     return new User(props, id)
   }
 
+  @ApiProperty()
   get name(): string {
     return this.props.name
   }
 
+  @ApiProperty()
   get email(): string {
     return this.props.email
   }
@@ -36,22 +39,25 @@ export class User {
     return this.props.password
   }
 
+  @ApiProperty()
   get role(): Role {
     return this.props.role
   }
 
+  @ApiProperty()
   get id(): string {
     return this._id
   }
 
+  @ApiProperty()
   get createdAt(): Date {
     return this.props.createdAt
   }
 
+  @ApiProperty()
   get updatedAt(): Date | undefined {
     return this.props.updatedAt
   }
-
   set createdAt(newCreatedAt: Date) {
     this.props.createdAt = newCreatedAt
   }

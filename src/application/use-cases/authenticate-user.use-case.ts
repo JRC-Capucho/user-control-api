@@ -4,6 +4,7 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { UserRepository } from 'src/domain/interfaces/user.repository.interface'
 import { HashService } from 'src/domain/interfaces/hash.service.interface'
 import { EncrypterService } from 'src/domain/interfaces/encrypter.service.interface'
+import { User } from 'src/domain/entities/user.entity'
 
 interface AuthenticateUserUseCaseRequest {
   email: string
@@ -13,6 +14,7 @@ interface AuthenticateUserUseCaseRequest {
 type AuthenticateUserUseCaseResponse = Either<
   WrongCredentialsError,
   {
+    user: User
     accessToken: string
   }
 >
@@ -49,6 +51,6 @@ export class AuthenticateUserUseCase {
       role: user.role,
     })
 
-    return right({ accessToken })
+    return right({ user, accessToken })
   }
 }

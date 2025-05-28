@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger'
 import { IUserProps } from 'src/domain/entities/user.entity'
 import { Role } from 'src/domain/enum/roles.enum'
 import {
