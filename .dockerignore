@@ -1,0 +1,9 @@
+
+test/
+biome.json
+compose.yaml
+vitest.config.ts
+vitest.config.e2e.ts
+.husky/
+.env.example
+Dockerfile
