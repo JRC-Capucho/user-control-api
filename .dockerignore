@@ -6,4 +6,5 @@ vitest.config.ts
 vitest.config.e2e.ts
 .husky/
 .env.example
+.env
 Dockerfile

@@ -21,6 +21,7 @@ import { EnvironmentService } from '../config/environment.service'
         database: env.get('DATABASE_NAME'),
         autoLoadEntities: true,
         synchronize: env.get('NODE_ENV') === 'Prod' ? false : true,
+        ssl: { rejectUnauthorized: false },
       }),
     }),
     TypeOrmModule.forFeature([UserOrmEntity]),

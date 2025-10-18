@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: user-control-api-svc
+
+spec:
+  type: ClusterIP
+  selector:
+    api: user-control-api
+  ports:
+    - port: 80
+      targetPort: 3333

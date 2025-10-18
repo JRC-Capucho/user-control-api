@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: user-control-api
+
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 20%
+      maxUnavailable: 10%
+  selector:
+    matchLabels:
+      api: user-control-api
+  template:
+    metadata:
+      labels:
+        api: user-control-api
+    spec:
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 1.1.1.1
+      containers:
+        - name: user-control-api
+          image: joaorc/user-control-api:v4
+          # command: ["sleep", "3600"]
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: user-control-api
+          ports:
+            - containerPort: 3333
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
