@@ -5,7 +5,7 @@ metadata:
   name: user-control-api
 
 spec:
-  replicas: 3
+  replicas: 10
   strategy:
     type: RollingUpdate
     rollingUpdate:
