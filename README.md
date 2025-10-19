@@ -70,6 +70,8 @@ src/
 - **PNPM**: Version 8 or higher
 - **Database**: PostgreSQL (or another TypeORM-supported database)
 - **Environment Variables**: Create a .env file based on .env.example with database credentials and other configurations.
+- Kubernetes (optional)
+- Kind (optional)
 
 ## Installation
 ```bash
@@ -99,6 +101,9 @@ pnpm run test:e2e
 
 # Generate test coverage report
 pnpm run test:cov
+
+## Running the Application in k8s
+kubectl apply -f k8s/application.yaml
 ```
 
 ## Environment Configuration
