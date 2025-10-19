@@ -36,4 +36,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{secrets.DOCKERHUB_USENAME}}/user-control-api:${{steps.generate_tag.outputs.sha}},${{secrets.DOCKERHUB_USENAME}}/user-control-api:latest
+          tags: joaorc/user-control-api:${{steps.generate_tag.outputs.sha}},joaorc/user-control-api:latest
