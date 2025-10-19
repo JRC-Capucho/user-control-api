@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: "22"
       - run: npm i -g pnpm
-      - run: pnpm install --fronzen-lockefile
+      - run: pnpm install
       - run: pnpm test
 
       - name: Generate tag
