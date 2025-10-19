@@ -23,7 +23,7 @@ spec:
           - 1.1.1.1
       containers:
         - name: user-control-api
-          image: joaorc/user-control-api:7560a56
+          image: joaorc/user-control-api:d061aa4
           # command: ["sleep", "3600"]
           imagePullPolicy: IfNotPresent
           envFrom:
