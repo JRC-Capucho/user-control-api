@@ -23,6 +23,6 @@ export class Environment {
   PORT: number = 3333
   @IsString()
   JWT_SECRET: string
-  @IsString()
-  JWT_EXPIRES_IN: string
+  @IsNumber()
+  JWT_EXPIRES_IN: number
 }
