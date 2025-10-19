@@ -37,3 +37,20 @@ jobs:
         with:
           push: true
           tags: joaorc/user-control-api:${{steps.generate_tag.outputs.sha}},joaorc/user-control-api:latest
+
+      - name: Install yq
+        run: sudo wget -O /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && sudo chmod +x /usr/bin/yq
+
+      - name: Update k8s manifest image
+        run: |
+          yq -i '.spec.template.spec.containers[0].image = "joaorc/user-control-api:${{ steps.generate_tag.outputs.sha }}"' k8s/deployment.yaml
+
+      - name: Commit and push manifest
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Actions"
+          git add k8s/deployment.yaml
+          git commit -m "ci: update image tag to ${{ steps.generate_tag.outputs.sha }}"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
