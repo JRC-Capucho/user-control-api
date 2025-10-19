@@ -10,16 +10,17 @@ jobs:
     name: "Build and Push"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: "22"
           cache: "pnpm"
-
+      - run: npm i -g pnpm
       - run: pnpm ci
       - run: pnpm test
+
       - name: Generate tag
         id: generate_tag
         run: |
